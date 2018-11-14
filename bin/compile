@@ -53,6 +53,8 @@ if [ -z ${PROJECT_NAME_WORKER:-} ]; then
 	PROJECT_NAME_WORKER=$(basename ${PROJECT_FILE_PATH_WORKER%.*})
 fi
 
+echo "PROJECT_NAME_WORKER:  ${PROJECT_NAME_WORKER:-}" | indent
+
 if [ -n "$(cat $PROJECT_NAME_WORKER | grep 'netcoreapp2.0')" ]; then
 	topic "WARNING"
 	echo "For netcoreapp2.0 use https://github.com/jincod/dotnetcore-buildpack#v2.1.200" | indent
