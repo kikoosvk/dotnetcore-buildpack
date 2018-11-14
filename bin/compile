@@ -40,17 +40,19 @@ export PATH="${BUILD_DIR}/.heroku/dotnet:${PATH}"
 cd $BUILD_DIR
 
 echo "PROJECT_NAME_WORKER:  ${PROJECT_NAME_WORKER:-}" | indent
-echo "PROJECT_NAME_WORKER:  ${PROJECT_FILE_NAME:-}" | indent
+echo "PROJECT_FILE_NAME:  ${PROJECT_FILE_NAME:-}" | indent
 
-if [ -z ${PROJECT_FILE:-} ]; then
-	PROJECT_FILE=$(x=$(dirname $(find ${BUILD_DIR} -maxdepth 5 -iname Startup.cs | head -1)); while [[ "$x" =~ $BUILD_DIR ]] ; do find "$x" -maxdepth 1 -name ${PROJECT_FILE_NAME}.csproj; x=`dirname "$x"`; done)
+if [ -z ${PROJECT_FILE_PATH:-} ]; then
+	PROJECT_FILE_PATH=$(x=$(dirname $(find ${BUILD_DIR} -maxdepth 5 -iname Startup.cs | head -1)); while [[ "$x" =~ $BUILD_DIR ]] ; do find "$x" -maxdepth 1 -name ${PROJECT_FILE_NAME}.csproj; x=`dirname "$x"`; done)
 fi
+
+echo "PROJECT_FILE_PATH:  ${PROJECT_FILE_PATH:-}" | indent
 
 if [ -z ${PROJECT_NAME_WORKER:-} ]; then
-	PROJECT_NAME_WORKER=$(basename ${PROJECT_FILE%.*})
+	PROJECT_NAME_WORKER=$(basename ${PROJECT_FILE_PATH%.*})
 fi
 
-if [ -n "$(cat $PROJECT_FILE | grep 'netcoreapp2.0')" ]; then
+if [ -n "$(cat $PROJECT_FILE_PATH | grep 'netcoreapp2.0')" ]; then
 	topic "WARNING"
 	echo "For netcoreapp2.0 use https://github.com/jincod/dotnetcore-buildpack#v2.1.200" | indent
 	echo "More info https://github.com/jincod/dotnetcore-buildpack/issues/44" | indent
@@ -58,8 +60,8 @@ fi
 
 export NUGET_PACKAGES="${CACHE_DIR}/nuget/cache"
 
-echo "publish ${PROJECT_FILE}"
-dotnet publish $PROJECT_FILE --output ${BUILD_DIR}/heroku_output --configuration Release --runtime linux-x64
+echo "publish ${PROJECT_FILE_PATH}"
+dotnet publish $PROJECT_FILE_PATH --output ${BUILD_DIR}/heroku_output --configuration Release --runtime linux-x64
 
 if [ ! -f ${BUILD_DIR}/Procfile ]; then
 	cat << EOT >> ${BUILD_DIR}/Procfile
