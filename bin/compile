@@ -64,11 +64,15 @@ fi
 export NUGET_PACKAGES="${CACHE_DIR}/nuget/cache"
 
 echo "publish ${PROJECT_NAME_WORKER}"
-dotnet publish $PROJECT_FILE_NAME_WORKER --output ${BUILD_DIR}/heroku_output --configuration Release --runtime linux-x64
+dotnet publish $PROJECT_FILE_NAME_WORKER --output ${BUILD_DIR}/heroku_output/${PROJECT_NAME_WORKER} --configuration Release --runtime linux-x64
 
 
-cat << EOT >> ${BUILD_DIR}/Procfile
-worker: cd \$HOME/heroku_output && ./${PROJECT_NAME_WORKER}
+if [ ! -f ${BUILD_DIR}/Procfile ]; then
+	cat << EOT >> ${BUILD_DIR}/Procfile
+	worker: cd \$HOME/heroku_output/${PROJECT_NAME_WORKER} && ./${PROJECT_NAME_WORKER}
 EOT
-echo "Worker started" | indent
+else
+	topic "WARNING"
+	echo "Be careful with custom Procfile" | indent
+fi
 
