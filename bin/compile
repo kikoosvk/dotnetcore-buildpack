@@ -44,10 +44,7 @@ echo "PATH:  ${PATH:-}" | indent
 echo "PROJECT_NAME_WORKER:  ${PROJECT_NAME_WORKER:-}" | indent
 echo "PROJECT_FILE_NAME_WORKER:  ${PROJECT_FILE_NAME_WORKER:-}" | indent
 
-if [ -z ${PROJECT_FILE_PATH_WORKER:-} ]; then
-	PROJECT_FILE_PATH_WORKER=$(x=$(dirname $(find ${BUILD_DIR} -maxdepth 5 -iname Startup.cs | head -1)); while [[ "$x" =~ $BUILD_DIR ]] ; do find "$x" -maxdepth 1 -name ${PROJECT_FILE_NAME_WORKER}.csproj; x=`dirname "$x"`; done)
-	echo "PROJECT_FILE_PATH_WORKER set to:  ${PROJECT_FILE_PATH_WORKER:-}" | indent
-fi
+PROJECT_FILE_PATH_WORKER=${BUILD_DIR}/${PROJECT_FILE_NAME_WORKER}/${PROJECT_FILE_NAME_WORKER}.csproj
 
 echo "PROJECT_FILE_PATH_WORKER:  ${PROJECT_FILE_PATH_WORKER:-}" | indent
 
