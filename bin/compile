@@ -39,6 +39,8 @@ export PATH="${BUILD_DIR}/.heroku/dotnet:${PATH}"
 
 cd $BUILD_DIR
 
+echo "BUILD_DIR:  ${BUILD_DIR:-}" | indent
+echo "PATH:  ${PATH:-}" | indent
 echo "PROJECT_NAME_WORKER:  ${PROJECT_NAME_WORKER:-}" | indent
 echo "PROJECT_NAME_WEB:  ${PROJECT_NAME_WEB:-}" | indent
 echo "PROJECT_FILE_NAME_WORKER:  ${PROJECT_FILE_NAME_WORKER:-}" | indent
