@@ -46,10 +46,12 @@ echo "PROJECT_FILE_NAME_WEB:  ${PROJECT_FILE_NAME_WEB:-}" | indent
 
 if [ -z ${PROJECT_FILE_PATH_WEB:-} ]; then
 	PROJECT_FILE_PATH_WEB=$(x=$(dirname $(find ${BUILD_DIR} -maxdepth 5 -iname Startup.cs | head -1)); while [[ "$x" =~ $BUILD_DIR ]] ; do find "$x" -maxdepth 1 -name ${PROJECT_FILE_NAME_WEB}.csproj; x=`dirname "$x"`; done)
+	echo "PROJECT_FILE_PATH_WEB set to:  ${PROJECT_FILE_PATH_WEB:-}" | indent
 fi
 
 if [ -z ${PROJECT_FILE_PATH_WORKER:-} ]; then
 	PROJECT_FILE_PATH_WORKER=$(x=$(dirname $(find ${BUILD_DIR} -maxdepth 5 -iname Startup.cs | head -1)); while [[ "$x" =~ $BUILD_DIR ]] ; do find "$x" -maxdepth 1 -name ${PROJECT_FILE_NAME_WORKER}.csproj; x=`dirname "$x"`; done)
+	echo "PROJECT_FILE_PATH_WORKER set to:  ${PROJECT_FILE_PATH_WORKER:-}" | indent
 fi
 
 
